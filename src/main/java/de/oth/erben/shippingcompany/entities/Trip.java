@@ -3,6 +3,7 @@ package de.oth.erben.shippingcompany.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Collection;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ public class Trip {
     @Id
     private long tripId;
 
-    @ManyToOne
+    @OneToMany(mappedBy="correspondingTrip")
     private Collection<AbstractOrder> orders;
 
     private boolean completed = false;
