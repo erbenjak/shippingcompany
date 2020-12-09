@@ -18,6 +18,12 @@ public class Trip {
     private boolean completed = false;
     private Date dropoffTime;
 
+    @ManyToOne()
+    private Vehicle deliveryVehicle;
+
+    public Trip() {
+    }
+
     public long getTripId() {
         return tripId;
     }
@@ -40,5 +46,13 @@ public class Trip {
 
     public void setDropoffTime(Date dropoffTime) {
         this.dropoffTime = dropoffTime;
+    }
+
+    public Vehicle getDeliveryVehicle() {
+        return deliveryVehicle;
+    }
+
+    public void setDeliveryVehicle(Vehicle deliveryVehicle) {
+        this.deliveryVehicle = deliveryVehicle;
     }
 }
