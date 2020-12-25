@@ -15,6 +15,16 @@ public class Status {
     private String description;
     private Date   updatedAt;
 
+    public Status(){
+        this(StatusDescription.REGISTERED);
+    }
+
+    public Status(StatusDescription description){
+        this.updatedAt = new Date();
+        this.description = description.getDescriptionString();
+        this.history.put(this.updatedAt,this.description);
+    }
+
     @OneToOne( mappedBy = "status")
     private AbstractOrder correspondingOrder;
 
