@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpeg" th:src="@{/Icons/Logo.jpg}"/>
     <title>Shipping company</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<body sec:authorize="hasRole('CUSTOMER')">
 <nav  class="navbar navbar-dark bg-dark navbar-expand-lg">
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="#">
                     <img border="0" alt="Logo" th:src="@{/Icons/Logo.jpg}" width="100" height="100">
                 </a>
-                    <span class="sr-only">(current)</span></a>
+                <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
@@ -47,13 +46,11 @@
 <h1>Welcome to my awesome Shipping-companys website</h1>
 
 <br>
-<a class="btn btn-primary" href="/sign/up" role="button">Sign up to be a partner</a>
+<a th:href="@{/customer/overview}" role="button" class="btn btn-secondary">My Orders</a>
 <br>
-<a th:href="@{/customer/home}"  role="button"  class="btn  btn-primary">Sign in</a>
+<a class="btn btn-primary" href="/order/letter" role="button">Order Letter</a>
 <br>
-<a th:href="@{/order/letter}"   role="button"  class="btn  btn-primary">Order Letter</a>
-<br>
-<a th:href="@{/order/shipment}" role="button"  class="btn  btn-primary">Order Shipment</a>
+<button th:href="@{/order/shipment}" role="button" class="btn btn-secondary">Order Shipment</button>
 
 
 </body>

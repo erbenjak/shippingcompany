@@ -15,7 +15,7 @@
                 <a class="nav-link" href="#">
                     <img border="0" alt="Logo" th:src="@{/Icons/Logo.jpg}" width="100" height="100">
                 </a>
-                    <span class="sr-only">(current)</span></a>
+                <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
@@ -42,18 +42,34 @@
     </div>
 </nav>
 
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"> Tracking-Id </th>
+        <th scope="col"> Type </th>
+        <th scope="col"> Status </th>
+        <th scope="col"> Details </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${orders.empty}">
+        <td colspan="2"> No Orders made! </td>
+    </tr>
+    <tr th:each="order : ${orders}" scope="row">
+        <td><span th:text="${order.trackingId}"> Tracking </span></td>
+        <td><span th:text="${order.trackingId}"> Type </span></td>
+        <td><span th:text="${order.trackingId}"> Status </span></td>
+        <td><a th:href="@{'/customer/order/details/'+${order.trackingId}}"> Details </a></td>
+    </tr>
+    </tbody>
+</table>
 
-
-<h1>Welcome to my awesome Shipping-companys website</h1>
-
 <br>
-<a class="btn btn-primary" href="/sign/up" role="button">Sign up to be a partner</a>
+<a th:href="@{/authentication/signIn}" role="button" class="btn btn-secondary">My Orders</a>
 <br>
-<a th:href="@{/customer/home}"  role="button"  class="btn  btn-primary">Sign in</a>
+<a class="btn btn-primary" href="/order/letter" role="button">Order Letter</a>
 <br>
-<a th:href="@{/order/letter}"   role="button"  class="btn  btn-primary">Order Letter</a>
-<br>
-<a th:href="@{/order/shipment}" role="button"  class="btn  btn-primary">Order Shipment</a>
+<button th:href="@{/order/shipment}" role="button" class="btn btn-secondary">Order Shipment</button>
 
 
 </body>
