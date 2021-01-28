@@ -1,59 +1,81 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/jpeg" th:src="@{/Icons/Logo.jpg}"/>
+    <link rel="icon" type="image/jpeg" th:src="@{/icons/Logo.jpg}"/>
     <title>Shipping company</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<nav  class="navbar navbar-dark bg-dark navbar-expand-lg">
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">
-                    <img border="0" alt="Logo" th:src="@{/Icons/Logo.jpg}" width="100" height="100">
-                </a>
-                    <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
-
-
-
+<div th:insert="components/navbar.html"></div>
 <h1>Welcome to my awesome Shipping-companys website</h1>
 
-<br>
-<a class="btn btn-primary" href="/sign/up" role="button">Sign up to be a partner</a>
-<br>
-<a th:href="@{/customer/home}"  role="button"  class="btn  btn-primary">Sign in</a>
-<br>
-<a th:href="@{/order/letter}"   role="button"  class="btn  btn-primary">Order Letter</a>
-<br>
-<a th:href="@{/order/shipment}" role="button"  class="btn  btn-primary">Order Shipment</a>
+<div class="d-flex justify-content-center" sec:authorize="isAnonymous()">
+    <div class="card text-right" style="width: 18rem; margin: 1rem;">
+        <div class="card-body">
+            <h5 class="card-title">Sign up</h5>
+            <p class="card-text">Not yet signed up as a partner? Create your account to start shipping with our services.</p>
+            <a th:href="@{/sign/up}"  role="button"  class="btn  btn-primary " style="color: white">Sign up</a>
+        </div>
+    </div>
+
+    <div class="card text-right" style="width: 18rem; margin: 1rem;">
+        <div class="card-body">
+            <h5 class="card-title">Sign in</h5>
+            <p class="card-text">Already a signed partner? sign in to your account to create or track your orders.</p>
+            <a th:href="@{/login}"  role="button"  class="btn  btn-primary" style="color: white">Sign in</a>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center">
+
+    <div class="card text-right" style="width: 18rem; margin: 1rem;" sec:authorize="hasRole('CUSTOMER')||isAnonymous()">
+        <div class="card-body">
+            <h5 class="card-title">Send a letter</h5>
+            <p class="card-text">Send a letter to be delivered by tomorrow via our easy mailing service.</p>
+            <a th:href="@{/order/letter}"   role="button"  class="btn  btn-primary" style="color: white">Order Letter</a>
+        </div>
+    </div>
+
+    <div class="card text-right" style="width: 18rem; margin: 1rem;" sec:authorize="hasRole('CUSTOMER')">
+        <div class="card-body">
+            <h5 class="card-title">Order a shipment</h5>
+            <p class="card-text">Need a custom delivery. Request it now.</p>
+            <a th:href="@{/order/shipment}" role="button"  class="btn  btn-primary" style="color: white">Order Shipment</a>
+        </div>
+    </div>
+
+    <div class="card text-right" style="width: 18rem; margin: 1rem;" sec:authorize="isAnonymous()">
+        <div class="card-body">
+            <h5 class="card-title">Track order</h5>
+            <p class="card-text">Got a Tracking-Number? - enter it to track your order </p>
+            <form th:action="@{/track}" method="post" th:object="${trackingCrumb}" class="">
+                <label for="Tracking-Id-Input">From</label>
+                <input class="form-control" type="text"  th:field="*{trackingId}" id="Tracking-Id-Input"/>
+                <button type="submit" class="btn btn-primary" style="margin-top:5px">Track</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card text-right" style="width: 18rem; margin: 1rem;" sec:authorize="hasRole('CUSTOMER')">
+        <div class="card-body">
+            <h5 class="card-title">My Orders</h5>
+            <p class="card-text">Review or edit your Orders</p>
+            <a th:href="@{/customer/overview}" role="button"  class="btn  btn-primary" style="color: white">My Orders</a>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center" sec:authorize="hasRole('EMPLOYEE')">
+    <div class="card text-right" style="width: 18rem; margin: 1rem;" >
+        <div class="card-body">
+            <h5 class="card-title">My Orders</h5>
+            <p class="card-text">Check which orders you have assigned and mark delivered ones as such.</p>
+            <a th:href="@{/employee/overview}" role="button"  class="btn  btn-primary" style="color: white">Deliver Order</a>
+        </div>
+    </div>
+</div>
 
 
 </body>

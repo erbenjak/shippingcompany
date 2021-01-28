@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -18,21 +19,18 @@ public abstract class AbstractOrder implements Serializable {
     @NotNull
     private double price;
 
-    @OneToOne
+    //a status without a object to reference is pointless and can therefore be deleted
+    @OneToOne(orphanRemoval=true, cascade = CascadeType.PERSIST)
     private Status status;
 
-    //@NotNull
     @Embedded
     private Address receivingAddress;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Trip correspondingTrip;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Customer customer;
-
-    @ManyToMany(mappedBy = "deliverys")
-    private List<Employee> employees = new ArrayList<>();
 
     public Long getTrackingId() {
         return trackingId;
@@ -82,11 +80,32 @@ public abstract class AbstractOrder implements Serializable {
         this.customer = customer;
     }
 
-    public List<Employee> getDeliveryPersonals() {
-        return employees;
+    public abstract String getType();
+
+
+    @Override
+    public boolean equals(Object o) {
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
+        AbstractOrder order = (AbstractOrder) o;
+
+        //same tracking-Id -> same order
+        return this.trackingId==order.trackingId;
     }
 
-    public void setDeliveryPersonals(List<Employee> employees) {
-        this.employees = employees;
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackingId);
     }
 }

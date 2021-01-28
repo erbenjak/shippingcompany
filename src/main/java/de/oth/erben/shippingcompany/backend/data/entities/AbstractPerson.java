@@ -2,6 +2,7 @@ package de.oth.erben.shippingcompany.backend.data.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -71,5 +72,31 @@ public abstract class AbstractPerson{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
+        AbstractPerson person = (AbstractPerson) o;
+
+        //same tracking-Id -> same order
+        return this.personId==person.personId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(personId);
     }
 }

@@ -1,6 +1,7 @@
 package de.oth.erben.shippingcompany.backend.data.entities.dto;
 
 import de.oth.erben.shippingcompany.backend.data.entities.Address;
+import org.hibernate.annotations.Type;
 
 public class OrderLetterDTO {
 
@@ -33,4 +34,5 @@ public class OrderLetterDTO {
     public void setCustomerKey(String customerKey) {
         this.customerKey = customerKey;
     }
+
 }

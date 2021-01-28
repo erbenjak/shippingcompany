@@ -4,7 +4,7 @@ import de.oth.erben.shippingcompany.backend.security.authorities.AbstractAuthori
 import de.oth.erben.shippingcompany.backend.security.authorities.CutomerAuthority;
 import de.oth.erben.shippingcompany.backend.security.authorities.EmployeeAuthority;
 import de.oth.erben.shippingcompany.backend.security.roles.Roles;
-import de.oth.erben.shippingcompany.backend.services.UserService;
+import de.oth.erben.shippingcompany.backend.services.user.UserService;
 import de.othr.brs31213.sw.othauth.dto.requests.LoginRequest;
 import de.othr.brs31213.sw.othauth.dto.responses.UserInformationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class AuthProvider implements AuthenticationProvider {
                     }
                 }
 
-                if(role.equals(Roles.EMPLOYEE.getInternalIdentifier())){
+                if(role.equals(Roles.EMPLOYEE.getExternalIdentifier())){
                     authorities.add(new EmployeeAuthority());
                     //check if internal account exits and create one if needed
                     if(!userService.checkIfEmployeeExists(response.getUsername())){

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" th:src="@{/Icons/Logo.jpg}"/>
+    <title>Shipping company</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="components/navbar.html"></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"> Trip-ID </th>
+        <th scope="col"> Amount orders </th>
+        <th scope="col"> Details </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${trips.empty}">
+        <td colspan="2"> No Delivery to make! </td>
+    </tr>
+    <tr th:each="trip : ${trips}" scope="row">
+        <td><span th:text="${trip.tripId}"> Trip-ID </span></td>
+        <td><span th:text="${trip.orders.size}"> Amount orders </span></td>
+        <td>
+            <a th:href="@{'/employee/trip/details/'+${trip.tripId}}" class="btn btn-primary"> Details </a>
+            <a th:if="${!trip.completed}" th:href="@{'/employee/trip/deliver/'+${trip.tripId}}" class="btn btn-primary"> Deliver </a>
+            <a th:if="${trip.completed}"  class="btn btn-success" disabled="disabled"> Delivered </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

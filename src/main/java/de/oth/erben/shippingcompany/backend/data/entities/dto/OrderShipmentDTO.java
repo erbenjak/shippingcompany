@@ -9,7 +9,6 @@ public class OrderShipmentDTO {
 
     private Address startingAddress;
     private Address receivingAddress;
-
     private String receivingAddressString;
 
     @DateTimeFormat(pattern="dd/MM/yyyy")
@@ -82,5 +81,13 @@ public class OrderShipmentDTO {
 
     public void setCustomerKey(String customerKey) {
         this.customerKey = customerKey;
+    }
+
+    public String getReceivingAddressString() {
+        return receivingAddressString;
+    }
+
+    public void setReceivingAddressString(String receivingAddressString) {
+        this.receivingAddressString = receivingAddressString;
     }
 }

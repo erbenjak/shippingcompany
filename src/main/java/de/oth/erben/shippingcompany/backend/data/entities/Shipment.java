@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Shipment extends AbstractOrder{
@@ -56,5 +57,36 @@ public class Shipment extends AbstractOrder{
 
     public void setDropOffTime(Date dropoffTime) {
         this.dropOffTime = dropoffTime;
+    }
+
+    @Override
+    public String getType() {
+        return "Shipment";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
+        Shipment shipment = (Shipment) o;
+
+        //same tracking-Id -> same order
+        return this.getTrackingId()==shipment.getTrackingId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTrackingId());
     }
 }

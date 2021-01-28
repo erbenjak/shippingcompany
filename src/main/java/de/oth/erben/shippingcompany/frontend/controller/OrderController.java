@@ -3,8 +3,11 @@ package de.oth.erben.shippingcompany.frontend.controller;
 import de.oth.erben.shippingcompany.backend.data.entities.dto.OrderLetterDTO;
 import de.oth.erben.shippingcompany.backend.data.entities.dto.OrderShipmentDTO;
 import de.oth.erben.shippingcompany.backend.data.entities.dto.ShipmentOrderdDTO;
-import de.oth.erben.shippingcompany.backend.services.order.AbstractMailingService;
+import de.oth.erben.shippingcompany.backend.services.firstorder.FirstOrderEventSubscriber;
+import de.oth.erben.shippingcompany.backend.services.order.IMailingService;
+import de.oth.erben.shippingcompany.backend.services.order.IShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class OrderController {
 
     @Autowired
-    AbstractMailingService mailingService;
+    IMailingService mailingService;
+
+    @Autowired
+    IShipmentService shipmentService;
+
+    @Autowired
+    FirstOrderEventSubscriber eventSubscriber;
 
     @RequestMapping(value = "/letter", method = RequestMethod.POST)
     public String orderLetter(Model model, @ModelAttribute("orderLetter") OrderLetterDTO orderLetter){
@@ -36,14 +45,14 @@ public class OrderController {
     @RequestMapping(value="/order/letter/confirmation/{trackingId}",method = RequestMethod.GET)
     public String showConfirmationLetter(Model model,@PathVariable ("trackingId") long trackingId){
         model.addAttribute("trackingId",trackingId);
-        model.addAttribute("logedIn", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+        model.addAttribute("logedIn", ! (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken));
         return "order/orderLetterConfirmation";
     }
 
     @RequestMapping(value = "/shipment", method = RequestMethod.POST)
     public String orderShipment(Model model, @ModelAttribute("orderLetter") OrderShipmentDTO orderShipment){
         //creating the shipment
-        ShipmentOrderdDTO orderedDTO = mailingService.orderShipment(orderShipment);
+        ShipmentOrderdDTO orderedDTO = shipmentService.orderShipment(orderShipment);
         return "redirect:/order/shipment/confirmation/"+orderedDTO.getTrackingId();
     }
 
@@ -56,8 +65,14 @@ public class OrderController {
 
     @RequestMapping(value="/order/shipment/confirmation/{trackingId}",method = RequestMethod.GET)
     public String showConfirmationShipment(Model model,@PathVariable ("trackingId") long trackingId){
+        if(eventSubscriber.isFirstOrderBonusCompleted()){
+            model.addAttribute("firstOrderBonus",eventSubscriber.getTrackingId());
+        }else{
+            model.addAttribute("firstOrderBonus",null);
+        }
+
         model.addAttribute("trackingId",trackingId);
-        model.addAttribute("logedIn", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+        model.addAttribute("logedIn",! (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken));
         return "order/orderShipmentConfirmation";
     }
 

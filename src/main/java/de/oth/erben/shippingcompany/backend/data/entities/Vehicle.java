@@ -14,11 +14,17 @@ public class Vehicle {
 
     private double maxWeight;
 
-    //conversion amount bundles as follows 1=bundle=840 liter the volume of euro-palette filled with liquids
     private double maxVolume;
 
     public Vehicle() {
         this.vehicleId = UUID.randomUUID().getMostSignificantBits();
+    }
+
+    public Vehicle(Long vehicleId, int amntPersonsRequired, double maxWeight, double maxVolume) {
+        this.vehicleId = vehicleId;
+        this.amntPersonsRequired = amntPersonsRequired;
+        this.maxWeight = maxWeight;
+        this.maxVolume = maxVolume;
     }
 
     public Long getVehicleId() {
@@ -55,14 +61,27 @@ public class Vehicle {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
         Vehicle vehicle = (Vehicle) o;
-        return amntPersonsRequired == vehicle.amntPersonsRequired && Double.compare(vehicle.maxWeight, maxWeight) == 0 && Double.compare(vehicle.maxVolume, maxVolume) == 0 && vehicleId.equals(vehicle.vehicleId);
+
+        //same tracking-Id -> same order
+        return this.getVehicleId()==vehicle.getVehicleId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehicleId, amntPersonsRequired, maxWeight, maxVolume);
+        return Objects.hash(getVehicleId());
     }
 }

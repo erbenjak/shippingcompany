@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="components/navbar.html"></div>
+<div class="mx-auto" style="width: 80%;">
+    <div id="header-box" style="background-color:#17AD4B; padding: 1em; opacity: 85%; border-radius: 10px;
+            color:ghostwhite;margin-top: 10px;margin-bottom: 10px;">
+        <h4>Successful!</h4>
+        <h5>Your order has successfully been completed.</h5>
+        <h5>Your shipment has the following Tracking-Number:</h5>
+        <h5 th:text="${trackingId}" >Error</h5>
+    </div>
+
+    <div th:if="${firstOrderBonus != null}" id="header-box-firstorder" style="background-color:#FDAF44; padding: 1em; opacity: 85%; border-radius: 10px;
+            color:ghostwhite;margin-top: 10px;margin-bottom: 10px;">
+        <h4>Congratulations!</h4>
+        <h5>Since this was your first order of a shipment, you have received a present from us.</h5>
+        <h5>Your present will arrive via mail - but you can already check it out in your orders.</h5>
+        <h5> It has the following Tracking-Number:</h5>
+        <h5 th:text="${firstOrderBonus}" >Error</h5>
+    </div>
+
+
+    <div th:if="${logedIn}" class="btn-group btn-group-lg" role="group" aria-label="buttongroup">
+        <a href="/" type="button" class="btn btn-secondary">Home</a>
+        <a th:href="@{/customer/overview}"type="button" class="btn btn-secondary">My Orders</a>
+    </div>
+
+    <div th:if="${!logedIn}" class="btn-group btn-group-lg" role="group" aria-label="buttongroup">
+        <a th:href="@{/}"type="button" class="btn btn-secondary">Home</a>
+    </div>
+
+
+</div>
+</body>
+</html>

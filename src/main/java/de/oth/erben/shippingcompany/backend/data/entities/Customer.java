@@ -1,9 +1,8 @@
 package de.oth.erben.shippingcompany.backend.data.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.*;
+
 
 @Entity
 public class Customer extends AbstractPerson{
@@ -36,4 +35,31 @@ public class Customer extends AbstractPerson{
     public void setOrders(List<AbstractOrder> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
+        Customer customer = (Customer) o;
+
+        //same tracking-Id -> same order
+        return this.getPersonId()==customer.getPersonId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPersonId());
+    }
+
 }

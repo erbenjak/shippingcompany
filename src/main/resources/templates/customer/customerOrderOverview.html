@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" th:src="@{/Icons/Logo.jpg}"/>
+    <title>Shipping company</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="components/navbar.html"></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"> Tracking-Id </th>
+        <th scope="col"> Type </th>
+        <th scope="col"> Status </th>
+        <th scope="col"> Details </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${orders.empty}">
+        <td colspan="2"> No Orders made! </td>
+    </tr>
+    <tr th:each="order : ${orders}" scope="row">
+        <td><span th:text="${order.trackingId}"> Tracking </span></td>
+        <td><span th:text="${order.getType()}"> Type </span></td>
+        <td><span th:text="${order.status.description}"> Status </span></td>
+        <td><a th:href="@{'/customer/order/details/'+${order.trackingId}}"> Details </a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

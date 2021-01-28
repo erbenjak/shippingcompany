@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="icon" type="image/jpeg" th:src="@{/icons/Logo.jpg}"/>
+    <title>Shipping company</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+<div th:insert="components/navbar.html"></div>
+    <div style="width:80%">
 
+        <div th:if="${order!=null}" id="header-box" style="background-color:#4A73F5; padding: 1em; opacity: 85%; border-radius: 10px;
+                color:ghostwhite;margin-top: 10px;margin-bottom: 10px;">
+            <h4 th:text="'Letter: '+${order.trackingId}">Letter</h4>
+            <h5 th:text="'Current Status:'+${order.status.description}">Status-Missing</h5>
+            <h5 th:text="'Last updated:'+${order.status.updatedAt}">Status-Timestamp-Missing</h5>
+        </div>
+
+        <div th:if="${order==null}" id="header-box" style="background-color:#ED3E32; padding: 1em; opacity: 85%; border-radius: 10px;
+                color:ghostwhite;margin-top: 10px;margin-bottom: 10px;">
+            <h4 >No order was found dor the given Tracking number.</h4>
+            <h5 >Please check the spelling and try again.</h5>
+        </div>
+
+        <a th:href="@{/}"type="button" class="btn btn-secondary">Home</a>
+
+    </div>
 </body>
 </html>

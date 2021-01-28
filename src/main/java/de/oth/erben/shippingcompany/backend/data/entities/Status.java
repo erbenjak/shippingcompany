@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class Status {
@@ -13,6 +14,7 @@ public class Status {
     private String description;
     private Date   updatedAt;
 
+    //creates a filled new status
     public Status(){
         this(StatusDescription.REGISTERED);
     }
@@ -59,5 +61,52 @@ public class Status {
 
     public long getId() {
         return statusId;
+    }
+
+    public void update(StatusDescription description){
+        this.updatedAt = new Date();
+        this.description = description.getDescriptionString();
+    }
+
+    public boolean isEditable(){
+        if(description.equals(StatusDescription.IN_DELIVERY.getDescriptionString())){
+            return false;
+        }
+
+        if(description.equals((StatusDescription.DELIVERED.getDescriptionString()))){
+            return  false;
+        }
+
+        if(description.equals((StatusDescription.CANCELED.getDescriptionString()))){
+            return  false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        //checking object Identity
+        if(this == o){
+            return true;
+        }
+
+        if(o == null){
+            return false;
+        }
+
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+
+        Status status = (Status) o;
+
+        //same tracking-Id -> same order
+        return this.getStatusId()==status.getStatusId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStatusId());
     }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" th:src="@{/Icons/Logo.jpg}"/>
+    <title>Shipping company</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="components/navbar.html"></div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"> Order-Id </th>
+        <th scope="col"> Type </th>
+        <th scope="col"> From </th>
+        <th scope="col"> To </th>
+        <th scope="col"> Amount </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:if="${letters}!=null" th:each="letter : ${letters}" scope="row">
+        <td><span th:text="${letter.trackingId}"> Order-ID </span></td>
+        <td><span> Letter </span></td>
+        <td><span> Headquarters </span></td>
+        <td><span th:text="${letter.receivingAddress.toString()}"> Order-ID </span></td>
+        <td><span> 1 </span></td>
+    </tr>
+
+    <tr th:if="${shipment}!=null" scope="row">
+        <td><span th:text="${shipment.trackingId}"> Order-ID </span></td>
+        <td><span> Shipment </span></td>
+        <td><span th:text="${shipment.pickUpAddress.toString()}"> To </span></td>
+        <td><span th:text="${shipment.receivingAddress.toString()}"> Order-ID </span></td>
+        <td><span th:text="${shipment.amountBundle}"> amount </span></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<div class="btn-group btn-group-lg" role="group" aria-label="buttongroup">
+    <a href="/employee/overview" type="button" class="btn btn-secondary">Deliveries-Overview</a>
+    <a th:if="${tripId != null}" th:href="'employee/trip/deliver/'+${tripId}" type="button" class="btn btn-success">Deliver</a>
+</div>
+
+
+</body>
+</html>
